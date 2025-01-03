@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost Ark Map</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        #map-container {
+            position: relative;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<h1>Lost Ark Map - Portal Navigation</h1>
+
+<div id="map-container">
+    <!-- 맵 이미지 -->
+    <img src="img.png" alt="Map" usemap="#lostArkMap" style="width: 800px;">
+
+    <!-- 이미지 맵 정의 -->
+    <map name="lostArkMap">
+        <!-- 포탈 1 -->
+        <area shape="circle" coords="675,220,15" href="/maps/1" alt="Portal 1">
+        <!-- 포탈 2 -->
+        <area shape="circle" coords="740,400,15" href="/maps/2" alt="Portal 2">
+        <!-- 포탈 3 -->
+        <area shape="circle" coords="200,600,15" href="/maps/3" alt="Portal 3">
+    </map>
+</div>
+</body>
+</html>
