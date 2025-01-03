@@ -18,4 +18,10 @@ public class Map {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     private Region region;
+
+    //연관관계 메서드
+    public void setRegion(Region region) {
+        this.region = region;
+        region.getMaps().add(this);
+    }
 }

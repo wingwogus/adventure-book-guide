@@ -4,6 +4,7 @@ import findark.adventure.domain.Map;
 import findark.adventure.domain.Region;
 import findark.adventure.repository.MapRepository;
 import findark.adventure.repository.RegionRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,19 +13,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MapService {
 
-    @Autowired
-    private RegionRepository regionRepository;
-
-    @Autowired
-    private MapRepository mapRepository;
+    private final RegionRepository regionRepository;
+    private final MapRepository mapRepository;
 
     // 지역에 속한 모든 맵 가져오기
     public List<Map> getMapsByRegion(Long regionId) {
         Optional<Region> region = regionRepository.findById(regionId);
         if (region.isPresent()) {
-            return mapRepository.findByRegionOrderById(region.get());
+            return mapRepository.findByRegionOrderById(region.get().getId());
         } else {
             return Collections.emptyList();
         }
