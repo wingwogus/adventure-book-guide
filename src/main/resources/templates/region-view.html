@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Region Maps</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+        }
+        .sidebar {
+            width: 20%;
+            background: #f4f4f4;
+            padding: 10px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .main {
+            flex: 1;
+            padding: 20px;
+        }
+        .region-item {
+            margin-bottom: 10px;
+        }
+        .map-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .map-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: white;
+            background: #007BFF;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h3>Regions</h3>
+    <ul>
+        <li th:each="region : ${maps}">
+            <a th:href="@{'/{regionName}'(regionName=${region.name})}"
+               class="region-item" th:text="${region.name}"></a>
+        </li>
+    </ul>
+</div>
+<div class="main">
+    <div class="map-container" th:if="${currentMap != null}">
+        <h2 th:text="${currentMap.name}">Map Name</h2>
+        <img th:src="${currentMap.imageUrl}" alt="Map Image" style="width: 100%; max-width: 600px;">
+        <p th:text="'Region: ' + ${regionName}"></p>
+        <p th:text="'Order: ' + ${currentMap.mapOrder}"></p>
+        <div class="map-buttons">
+            <a th:href="@{'/{regionName}/{prevMap.mapOrder}'(regionName=${regionName}, prevMapOrder=${prevMap.mapOrder})}" class="btn">Previous Map</a>
+            <a th:href="@{'/{regionName}/{nextMap.mapOrder}'(regionName=${regionName}, nextMapOrder=${nextMap.mapOrder})}" class="btn">Next Map</a>
+        </div>
+    </div>
+    <div th:if="${error}">
+        <p th:text="${error}" style="color: red;"></p>
+    </div>
+</div>
+</body>
+</html>

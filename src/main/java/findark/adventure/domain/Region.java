@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,11 @@ public class Region {
 
     private String name;
 
-    @OneToMany(mappedBy = "region")
-    private List<Map> maps;
+    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL)
+    private List<Map> maps = new ArrayList<>();
+
+    public void addMap(Map map) {
+        maps.add(map);
+        map.setRegion(this);
+    }
 }

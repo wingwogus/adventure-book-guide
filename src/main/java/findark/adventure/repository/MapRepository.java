@@ -9,11 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-@RequiredArgsConstructor
-public class MapRepository {
-
-    private final EntityManager em;
-
-    List<Map> findMapsByRegion(Long regionId);
+public interface MapRepository extends JpaRepository<Map, Long> {
+    List<Map> findByRegion(Region region);
 }

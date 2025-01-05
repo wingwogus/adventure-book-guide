@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Region</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .region-list {
+            list-style: none;
+            padding: 0;
+        }
+        .region-item {
+            margin: 10px 0;
+        }
+        .region-link {
+            text-decoration: none;
+            color: #007BFF;
+            font-size: 1.2em;
+        }
+        .region-link:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<h1>Select a Region</h1>
+<ul class="region-list">
+    <li th:each="region : ${regions}" class="region-item">
+        <a th:href="@{'/{regionName}'(regionName=${region.name})}" th:text="${region.name}" class="region-link"></a>
+    </li>
+</ul>
+</body>
+</html>

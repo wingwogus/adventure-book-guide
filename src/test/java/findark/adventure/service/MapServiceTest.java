@@ -4,62 +4,139 @@ import findark.adventure.domain.Map;
 import findark.adventure.domain.Region;
 import findark.adventure.repository.MapRepository;
 import findark.adventure.repository.RegionRepository;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class MapServiceTest {
+@Transactional
+public class MapServiceTest {
 
-    @Autowired MapService mapService;
+    @Autowired
+    AdventureService mapService;
+
     @Autowired MapRepository mapRepository;
+
     @Autowired RegionRepository regionRepository;
 
-    private Region region;
-    private Map map1;
-    private Map map2;
 
-    @BeforeEach
-    public void setUp() throws Exception {
-        region = new Region();
-        region.setName("Test Region");
-
-        map1 = new Map();
-        map1.setRegion(region);
-
-        map2 = new Map();
-        map2.setRegion(region);
-
-        regionRepository.save(region);
-        }
 
     @Test
-    public void testGetPreviousMap_withValidPrevious() throws Exception {
-        // 두 번째 맵에서 이전 맵이 있는지 확인
-        Map result = mapService.getPreviousMap(mapRepository.findByRegionOrderById(region.getId()), map2.getId());
-        Assertions.assertThat(result).isEqualTo(map1);
+    @Transactional()
+    public void testGetMapsByRegionName() {
+        // Given
+        Region regionA = new Region();
+        regionA.setName("Region A");
+
+        Map map1 = new Map();
+        map1.setName("Map 1");
+        map1.setMapOrder(0);
+        mapRepository.save(map1);
+
+        regionA.addMap(mapRepository.findById(map1.getId()).orElseThrow());
+
+        regionRepository.save(regionA);
+
+        String regionName = "Region A";
+
+        // When
+        List<Map> result = mapService.getMapsByRegionName(regionName);
+
+        // Then
+        assertThat(result.get(0)).isEqualTo(mapRepository.findById(map1.getId()).orElseThrow());
     }
 
     @Test
-    public void testGetNextMap_withValidNext() throws Exception{
-        // 첫 번째 맵에서 다음 맵이 있는지 확인
-        Map result = mapService.getNextMap(mapRepository.findByRegionOrderById(region.getId()), map1.getId());
-        Assertions.assertThat(result).isEqualTo(map2);
+    public void 이전_맵_확인() throws Exception {
+        //given
+        Region regionA = new Region();
+        regionA.setName("Region A");
 
-    }
+        Map map1 = new Map();
+        map1.setName("Map 1");
+        map1.setMapOrder(0);
+        mapRepository.save(map1);
 
-//    @Test
-//    public void testGetMapsByRegion() throws Exception{
-//        // 특정 지역에 대한 맵 리스트 가져오기
-//        List<Map> maps = mapService.getMapsByRegion(region.getId());
-//        ass
-//        assertEquals(2, maps.size());  // 두 개의 맵이 반환되어야 함
-//        assertTrue(maps.contains(map1));
-//        assertTrue(maps.contains(map2));
-//    }
+        Map map2 = new Map();
+        map2.setName("Map 2");
+        map2.setMapOrder(1);
+        mapRepository.save(map2);
+
+        Map map3 = new Map();
+        map3.setName("Map 3");
+        map3.setMapOrder(2);
+        mapRepository.save(map3);
+
+        Map map4 = new Map();
+        map4.setName("Map 4");
+        map4.setMapOrder(3);
+        mapRepository.save(map4);
+
+        regionA.addMap(mapRepository.findById(map1.getId()).orElseThrow());
+        regionA.addMap(mapRepository.findById(map2.getId()).orElseThrow());
+        regionA.addMap(mapRepository.findById(map3.getId()).orElseThrow());
+        regionA.addMap(mapRepository.findById(map4.getId()).orElseThrow());
+
+        regionRepository.save(regionA);
+
+        //when
+        Map nextMap = mapService.getNextMap("Region A", map1);
+        Map nextMap2 = mapService.getNextMap("Region A", nextMap);
+        Map previousMap = mapService.getPreviousMap("Region A", nextMap);
+
+        System.out.println("map1 nextMap.getName() = " + nextMap.getName());
+        System.out.println("previousMap.getName() = " + previousMap.getName());
+
+        //then
+        assertThat(nextMap).isEqualTo(mapRepository.findById(map2.getId()).orElseThrow());
+        assertThat(nextMap2).isEqualTo(mapRepository.findById(map3.getId()).orElseThrow());
+        assertThat(previousMap).isEqualTo(mapRepository.findById(map1.getId()).orElseThrow());
+     }
+
+     @Test
+     public void 마지막_지역() throws Exception {
+         //given
+         Region regionA = new Region();
+         regionA.setName("Region A");
+
+         Map map1 = new Map();
+         map1.setName("Map 1");
+         map1.setMapOrder(0);
+         mapRepository.save(map1);
+
+         Map map2 = new Map();
+         map2.setName("Map 2");
+         map2.setMapOrder(1);
+         mapRepository.save(map2);
+
+         Map map3 = new Map();
+         map3.setName("Map 3");
+         map3.setMapOrder(2);
+         mapRepository.save(map3);
+
+         Map map4 = new Map();
+         map4.setName("Map 4");
+         map4.setMapOrder(3);
+         mapRepository.save(map4);
+
+         regionA.addMap(mapRepository.findById(map1.getId()).orElseThrow());
+         regionA.addMap(mapRepository.findById(map2.getId()).orElseThrow());
+         regionA.addMap(mapRepository.findById(map3.getId()).orElseThrow());
+         regionA.addMap(mapRepository.findById(map4.getId()).orElseThrow());
+
+         regionRepository.save(regionA);
+         //when
+         Map nextMap = mapService.getNextMap("Region A", map4);
+         Map previousMap = mapService.getPreviousMap("Region A", map1);
+
+         //then
+         assertThat(nextMap).isEqualTo(mapRepository.findById(map1.getId()).orElseThrow());
+         assertThat(previousMap).isEqualTo(mapRepository.findById(map4.getId()).orElseThrow());
+     }
 }
