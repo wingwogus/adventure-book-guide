@@ -32,7 +32,7 @@
 <h1>Select a Region</h1>
 <ul class="region-list">
     <li th:each="region : ${regions}" class="region-item">
-        <a th:href="@{'/{regionName}'(regionName=${region.name})}" th:text="${region.name}" class="region-link"></a>
+        <a th:href="@{'/regions/{regionId}?mapId=0'(regionId=${region.getId()})}" th:text="${region.getName()}" class="region-link"></a>
     </li>
 </ul>
 </body>

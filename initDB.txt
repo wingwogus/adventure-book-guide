@@ -1,0 +1,15 @@
+insert into region values(1, 'ardetine');
+insert into region values(2, 'yhon');
+insert into region values(3, 'anitz');
+
+insert into map values(1, 1, 1, 'url', '북부');
+insert into map values(2, 2, 1, 'url', '중부');
+insert into map values(3, 3, 1, 'url', '남부');
+
+insert into map values(1, 4, 2, 'url', '북부');
+insert into map values(2, 5, 2, 'url', '중부');
+insert into map values(3, 6, 2, 'url', '남부');
+
+insert into map values(1, 7, 3, 'url', '북부');
+insert into map values(2, 8, 3, 'url', '중부');
+insert into map values(3, 9, 3, 'url', '남부');
