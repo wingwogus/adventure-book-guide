@@ -1,0 +1,95 @@
+a:visited {
+    text-decoration: none;
+}
+body {
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    background-color: rgb(64, 64, 64);
+    font-family: "Noto Sans KR", sans-serif;
+}
+.sidebar {
+    width: 15%;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    padding: 10px 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+}
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
+.region-item-container {
+    list-style: none;
+    padding: 25px 0;
+    margin: 10px 0;
+}
+.main {
+    flex: 1;
+    padding: 20px;
+}
+.region-item {
+    text-decoration: none;
+    font-size: 30px;
+    color: aliceblue;
+    text-shadow: 10px 10px 10px rgb(0,0,0);
+}
+.second-sidebar {
+    position: fixed;
+    top: 0;
+    left: 15%;
+    width: 10%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+    padding: 60px 10px;
+    opacity: 0;
+    transform: translateX(-20px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.5s ease-in-out, box-shadow 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+}
+
+.map-item {
+    display: block;
+    color:white;
+    padding-bottom: 30px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.region-item-container:hover .second-sidebar {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.map-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.map-buttons {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+.btn {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: white;
+    background: #876f6f;
+    border-radius: 5px;
+}
+.btn:hover {
+    background: #504141;
+}
+#region-name {
+    font-size: 50px;
+    margin: 0;
+    color: aliceblue;
+}
+#map-name {
+    font-size: 20px;
+    color: aliceblue;
+}

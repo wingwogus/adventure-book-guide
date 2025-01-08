@@ -24,11 +24,11 @@ public class MapController {
      * 1. "/" 처리 - 지역 선택 화면
      */
     @GetMapping("/")
-    public String showRegionSelection(Model model) {
+    public String home(Model model) {
         // 모든 지역 가져오기
         List<Region> regions = regionService.findRegions();
         model.addAttribute("regions", regions);
-        return "index";
+        return "redirect:/regions/1?mapId=0";
     }
 
     /**
@@ -56,7 +56,7 @@ public class MapController {
         model.addAttribute("region", region);
         model.addAttribute("map", map);
 
-        return "region-view";
+        return "main-view";
     }
 
     @GetMapping("/regions/{regionId}/{mapId}/{direct}")
