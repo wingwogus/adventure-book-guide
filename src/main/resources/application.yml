@@ -6,11 +6,17 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-     ddl-auto: create
+     ddl-auto: validate
     properties:
       hibernate:
       # show_sql: true
         format_sql: true
+
+
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.orm.jdbc.bind: trace #스프링 부트 3.x, hibernate6
+
+loa:
+  apiKey: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IktYMk40TkRDSTJ5NTA5NWpjTWk5TllqY2lyZyIsImtpZCI6IktYMk40TkRDSTJ5NTA5NWpjTWk5TllqY2lyZyJ9.eyJpc3MiOiJodHRwczovL2x1ZHkuZ2FtZS5vbnN0b3ZlLmNvbSIsImF1ZCI6Imh0dHBzOi8vbHVkeS5nYW1lLm9uc3RvdmUuY29tL3Jlc291cmNlcyIsImNsaWVudF9pZCI6IjEwMDAwMDAwMDA0MTg0NDkifQ.ESR8bXBtKCpFb6t9BSXV5OqNgy7IruHcmZiTrOIMM7Bj8QM-5Y4PhbcQT9Joq2wloZSfvUN27etzzlXNv7Pq0wjfjpr5FC9rEMKq_eFxvhB4-6nDsVntDUTLZ746cdwQfwsw31FBG-Ovkykyh-HDoVWhLSOUISGSazzoQQvvA-0o0NwU2cX4Et0RexB6YgEgg5DAyqh5AEtuc-dZOElVnsB8LGnTRZOF2perTjiI_H6kaSAs9ZPknZmx9FQJkDlfrjHZX6pe5dHTH7uoTXsN6oN4RzFI2u-Jl8vsy0WbqCDVJ2FdjOOeEXv_vSmffbsHEa7rXGqlUXPzd5m_96Jgew
+  apiUrl: https://developer-lostark.game.onstove.com

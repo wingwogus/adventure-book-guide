@@ -1,45 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Region Maps</title>
+    <title>Today Loa</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/main-view.css">
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/js/common.js}"></script>
+    <script src="https://kit.fontawesome.com/a9eb1f10be.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="sidebar">
     <ul>
-        <li th:each="region : ${regions}" class="region-item-container">
-            <a th:href="@{'/regions/{regionId}?mapId=0'(regionId=${region.getId()})}"
-               class="region-item" th:text="${region.getName()}"></a>
+        <li th:each="regionItem : ${regions}" class="region-item-container">
+            <a th:href="@{/regions/{regionId}(regionId=${regionItem.getId()})}"
+               class="region-item" th:text="${regionItem.getName()}"></a>
             <div class="second-sidebar">
-                <a th:each="map : ${region.getMaps()}" th:text="${map.getName()}"
-                th:href="@{'/regions/{regionId}?mapId={mapId}' (regionId=${region.getId()}, mapId=${map.getId()})}"
-                class="map-item">Map Name</a>
+                <a th:each="mapItem : ${regionItem.getMaps()}" th:text="${mapItem.getName()}"
+                   th:href="@{/regions/{regionId}(regionId=${regionItem.getId()}, mapId=${mapItem.getId()})}"
+                   class="map-item">Map Name</a>
             </div>
         </li>
     </ul>
 </div>
 <div class="main">
     <div class="map-container" th:if="${map}">
-        <h2 th:text="${map.getRegion().getName()}" id="region-name">Region Name</h2>
+        <h2 th:text="${region.getName()}" id="region-name">Region Name</h2>
         <h3 th:text="${map.getName()}" id="map-name">Map Name</h3>
         <div class="map-buttons">
-            <a th:href="@{'/regions/{regionId}/{mapId}/prev'
-            (regionId=${map.getRegion().getId()}, mapId=${map.getId()})}" class="btn">Prev</a>
-            <a th:href="@{'/regions/{regionId}/{mapId}/next'
-            (regionId=${map.getRegion().getId()}, mapId=${map.getId()})}" class="btn">Next</a>
-        </div>
-        <img th:src="${map.getImageUrl()}" alt="Map Image" style="width: 100%; max-width: 500px;">
-        <p th:text="'순서: ' + ${map.getMapOrder()}"></p>
-    </div>
-    <div th:if="${error}">
-        <p th:text="${error}" style="color: red;"></p>
-    </div>
-    <div class="item-menu">
+            <a th:href="@{/regions/{regionId}(
+            regionId=${region.getId()},
+            mapId=${map.getId()},
+            direct='prev')}" class="btn">Prev</a>
 
+            <a th:href="@{/regions/{regionId}(
+            regionId=${region.getId()},
+            mapId=${map.getId()},
+            direct='next')}" class="btn">Next</a>
+        </div>
+        <img th:src="${map.getImageUrl()}" alt="Map Image" style="width: 100%; max-width: 35vw;">
     </div>
 </div>
+
+<table id="resultsTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>이름</th>
+        <th>등급</th>
+        <th>아이콘</th>
+        <th>개당 구매 비용</th>
+        <th>총 구매 비용</th>
+    </tr>
+    </thead>
+    <tbody id="results">
+    </tbody>
+</table>
+<script th:inline="javascript">
+    addEventListener('DOMContentLoaded', searchMarket);
+
+    let currentPage = 1;
+    let pageSize = 10; // 페이지당 보여주는 개수
+    let allItems = [];
+
+    function searchMarket() {
+        currentPage = 1; // 검색을 시작할 때 페이지 초기화
+        allItems = [];
+
+        let data = {
+            sort: "GRADE",
+            categoryCode: 100000,
+            itemName: "",
+            pageNo: currentPage,
+            pageSize: pageSize,
+            sortCondition: "ASC"
+        }
+
+        postApi('/api/market/search', data, function onSuccess(response) {
+            if (response && response.Items.length > 0) {
+                allItems = allItems.concat(response.Items); // 아이템 병합
+                if (response.Items.length === pageSize) {
+                    // 더 가져올 페이지가 있다면
+                    currentPage++; // 페이지 증가
+                    data.pageNo = currentPage; // 다음 페이지 번호 설정
+
+                    // 재귀 호출
+                    postApi('/api/market/search', data, onSuccess, onApiError);
+                } else {
+                    // 모든 데이터를 다 가져왔으면 결과 렌더링
+                    onSearchMarketSuccess(allItems);
+                }
+            } else {
+                // 결과가 없으면 종료
+                onSearchMarketSuccess(allItems);
+            }
+        }, onApiError);
+    }
+
+    function onSearchMarketSuccess(data) {
+        const results = document.getElementById('results');
+        results.innerHTML = ''; // 기존 결과 초기화
+        const itemId = [[${region.getStartItemId()}]];
+        const items = data || [];
+
+        items.forEach(item => {
+            if(parseInt(item.Id) >= itemId && parseInt(item.Id) <= itemId + 6) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td>${item.Id}</td>
+                <td>${item.Name}</td>
+                <td>${item.Grade}</td>
+                <td><img src="${item.Icon}" alt="${item.Name} 아이콘"></td>
+                <td>${item.RecentPrice}</td>
+                <td>약 ${calcPrice(item)} </td>`;
+                results.appendChild(row);
+            }
+        });
+    }
+    function calcPrice(item) {
+        const itemPrice = parseInt(item.RecentPrice);
+        switch (item.Grade) {
+            case "일반": return itemPrice * 50;
+            case "고급": return itemPrice * 20;
+            case "희귀": return itemPrice * 20;
+            case "영웅": return itemPrice * 6;
+            case "전설": return itemPrice * 3;
+        }
+    }
+</script>
 </body>
 </html>

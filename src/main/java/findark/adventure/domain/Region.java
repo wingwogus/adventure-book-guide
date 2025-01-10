@@ -17,11 +17,8 @@ public class Region {
 
     private String name;
 
+    private int startItemId;
+
     @OneToMany(mappedBy = "region", cascade = CascadeType.ALL)
     private List<Map> maps = new ArrayList<>();
-
-    public void addMap(Map map) {
-        maps.add(map);
-        map.setRegion(this);
-    }
 }

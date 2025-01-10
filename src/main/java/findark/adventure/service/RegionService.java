@@ -19,7 +19,7 @@ public class RegionService {
                 .orElseThrow(() -> new IllegalArgumentException("Region not found"));
     }
 
-    public List<Region> findRegions() {
+    public List<Region> getRegions() {
         return regionRepository.findAll();
     }
 }

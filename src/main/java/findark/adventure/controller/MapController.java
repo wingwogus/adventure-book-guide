@@ -2,74 +2,73 @@ package findark.adventure.controller;
 
 import findark.adventure.domain.Map;
 import findark.adventure.domain.Region;
+import findark.adventure.dto.MarketSearchRes;
+import findark.adventure.service.ApiService;
 import findark.adventure.service.MapService;
 import findark.adventure.service.RegionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/regions")
 public class MapController {
 
     private final MapService mapService;
     private final RegionService regionService;
+    private final ApiService apiService;
 
     /**
      * 1. "/" 처리 - 지역 선택 화면
      */
-    @GetMapping("/")
+    @GetMapping()
     public String home(Model model) {
         // 모든 지역 가져오기
-        List<Region> regions = regionService.findRegions();
+        List<Region> regions = regionService.getRegions();
         model.addAttribute("regions", regions);
-        return "redirect:/regions/1?mapId=0";
+        return "redirect:/regions/" + regions.getLast().getId();
     }
 
     /**
      * 2. "/{regionId}" 처리 - 지역별 맵 보기
      */
-    @GetMapping("/regions/{regionId}")
+    @GetMapping("/{regionId}")
     public String showRegionMaps(@PathVariable Long regionId,
-                                 @RequestParam("mapId") Long mapId,
+                                 @RequestParam(value = "mapId", required = false) Long mapId,
+                                 @RequestParam(value = "direct", required = false) String direct,
                                  Model model) {
-
-
+        List<Region> regions = regionService.getRegions();
         Region region = regionService.findRegion(regionId);
-        List<Region> regions = regionService.findRegions();
+        Collections.reverse(regions);
 
         Map map;
-        // 기본적으로 첫 번째 맵을 표시
-        if (mapId == 0) {
-            List<Map> maps = mapService.findMapsByRegion(region);
-            map = maps.get(0);
-        } else {
-            map = mapService.findMap(mapId);
+        //mapId 값 존재 시
+        if (mapId != null) map = mapService.findMap(mapId);
+        //없으면 첫번째 반환
+        else map = mapService.findMapsByRegion(region).get(0);
+
+        //direct 값 존재 시
+        if (direct != null) {
+            if (direct.equals("next")) mapId = mapService.getNextMap(map).getId();
+            else mapId = mapService.getPrevMap(map).getId();
+
+            return "redirect:/regions/" + regionId + "?mapId=" + mapId;
         }
 
         model.addAttribute("regions", regions);
         model.addAttribute("region", region);
         model.addAttribute("map", map);
+        model.addAttribute("startId", 910301);
 
         return "main-view";
-    }
-
-    @GetMapping("/regions/{regionId}/{mapId}/{direct}")
-    public String showNextMaps(@PathVariable Long regionId,
-                               @PathVariable Long mapId,
-                               @PathVariable String direct) {
-        Map map = mapService.findMap(mapId);
-        if (direct.equals("next")) {
-            map = mapService.getNextMap(map);
-        } else if (direct.equals("prev")) {
-            map = mapService.getPreviousMap(map);
-        }
-
-        return "redirect:/regions/" + regionId + "?mapId=" + map.getId();
     }
 }

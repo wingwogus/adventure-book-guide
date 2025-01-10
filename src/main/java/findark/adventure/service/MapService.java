@@ -3,7 +3,6 @@ package findark.adventure.service;
 import findark.adventure.domain.Map;
 import findark.adventure.domain.Region;
 import findark.adventure.repository.MapRepository;
-import findark.adventure.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +32,7 @@ public class MapService {
         return maps.get((map.getMapOrder()) % maps.size());
     }
 
-    public Map getPreviousMap(Map map) {
+    public Map getPrevMap(Map map) {
         Region region = map.getRegion();
         List<Map> maps = mapRepository.findMapsByRegion(region);
 
