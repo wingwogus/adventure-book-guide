@@ -28,7 +28,9 @@ ul {
 }
 .main {
     flex: 1;
-    padding: 2vh;
+    margin: 2vh;
+    border-radius: 10px;
+    background-color: #535353;
 }
 .region-item {
     display: block;
@@ -102,17 +104,21 @@ ul {
     background: #504141;
 }
 #region-name {
-    font-size: 3vw;
+    font-size: 2vw;
     margin: 0;
     color: aliceblue;
 }
 #map-name {
-    font-size: 1.5vw;
+    font-size: 1vw;
     font-weight: normal;
     color: aliceblue;
 }
 .sub-container {
     flex: 1;
+    margin: 2vh;
+    border-radius: 10px;
+    background-color: #535353;
+    height: fit-content;
 }
 #sub-title {
     text-align: center;
@@ -123,22 +129,16 @@ ul {
     margin: 1vw;
     table-layout: fixed;
     border-collapse: collapse;
-    height: fit-content;
-    background-color: #454545;
-
-}
-
-#resultsTable th {
-    width: 4vw;
+    background-color: #786767;
 }
 
 #resultsTable td, tr {
     text-align: center;
     font-size: 1vw;
-    border: 2px solid black;
     color: #dddbdb;
     overflow: hidden;
+    padding: 0.5vw;
 }
-.고급{
-    color: darkgreen;
+.grade{
+    font-weight: bold;
 }
