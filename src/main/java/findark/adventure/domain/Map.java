@@ -1,6 +1,5 @@
 package findark.adventure.domain;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

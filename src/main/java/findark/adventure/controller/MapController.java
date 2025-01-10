@@ -1,13 +1,12 @@
 package findark.adventure.controller;
 
 import findark.adventure.domain.Map;
+import findark.adventure.domain.MarketItem;
 import findark.adventure.domain.Region;
-import findark.adventure.dto.MarketSearchRes;
-import findark.adventure.service.ApiService;
 import findark.adventure.service.MapService;
+import findark.adventure.service.MarketItemService;
 import findark.adventure.service.RegionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,15 +24,16 @@ public class MapController {
 
     private final MapService mapService;
     private final RegionService regionService;
-    private final ApiService apiService;
+    private final MarketItemService marketItemService;
 
     /**
      * 1. "/" 처리 - 지역 선택 화면
      */
-    @GetMapping()
+    @GetMapping("")
     public String home(Model model) {
         // 모든 지역 가져오기
         List<Region> regions = regionService.getRegions();
+        marketItemService.fetchAndSaveMarketData();
         model.addAttribute("regions", regions);
         return "redirect:/regions/" + regions.getLast().getId();
     }
@@ -64,10 +64,12 @@ public class MapController {
             return "redirect:/regions/" + regionId + "?mapId=" + mapId;
         }
 
+        List<MarketItem> items = marketItemService.getItemsByRegion(region);
+
         model.addAttribute("regions", regions);
         model.addAttribute("region", region);
         model.addAttribute("map", map);
-        model.addAttribute("startId", 910301);
+        model.addAttribute("items", items);
 
         return "main-view";
     }

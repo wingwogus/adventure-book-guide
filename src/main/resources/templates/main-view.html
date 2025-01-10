@@ -6,9 +6,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/main-view.css">
-    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
-    <script th:src="@{/js/common.js}"></script>
-    <script src="https://kit.fontawesome.com/a9eb1f10be.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="sidebar">
@@ -42,92 +39,46 @@
         <img th:src="${map.getImageUrl()}" alt="Map Image" style="width: 100%; max-width: 35vw;">
     </div>
 </div>
+<div class="sub-container">
+    <h2 id="sub-title">수집품</h2>
+    <table id="resultsTable" th:if="${items.size() != 0}">
+        <tbody id="results">
+        <tr>
+            <th></th>
+            <td th:each="item : ${items}" height="50px">
+                <img th:src="${item.getIcon()}" th:alt="${item.getName()}">
+            </td>
+        </tr>
+        <tr>
+            <th>이름</th>
+            <td th:each="item : ${items}" th:text="${item.getName()}">이름</td>
+        </tr>
+        <tr>
+            <th>등급</th>
+            <td th:each="item : ${items}" th:text="${item.getGrade()}" th:class="${item.getGrade()}">등급</td>
+        </tr>
+        <tr>
+            <th>가격</th>
+            <td th:each="item : ${items}">
+                <span th:text="${item.getRecentPrice()}">개당 가격</span>
+                <img src="/img/gold.png" width="12px" alt="gold">
+            </td>
+        </tr>
+        <tr style="color: sandybrown">
+            <th>총 가격</th>
+            <td th:each="item : ${items}">
+                <th:block th:switch="${item.getGrade()}">
+                    <span th:case="일반" th:text="${item.getRecentPrice() * 20}">일반</span>
+                    <span th:case="고급" th:text="${item.getRecentPrice() * 20}">고급</span>
+                    <span th:case="희귀" th:text="${item.getRecentPrice() * 10}">희귀</span>
+                    <span th:case="영웅" th:text="${item.getRecentPrice() * 6}">영웅</span>
+                    <span th:case="전설" th:text="${item.getRecentPrice() * 3}">전설</span>
+                </th:block>
+                <img src="/img/gold.png" width="12px" alt="gold">
+            </td>
+        </tr>
+        </tbody>
+    </table></div>
 
-<table id="resultsTable">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>이름</th>
-        <th>등급</th>
-        <th>아이콘</th>
-        <th>개당 구매 비용</th>
-        <th>총 구매 비용</th>
-    </tr>
-    </thead>
-    <tbody id="results">
-    </tbody>
-</table>
-<script th:inline="javascript">
-    addEventListener('DOMContentLoaded', searchMarket);
-
-    let currentPage = 1;
-    let pageSize = 10; // 페이지당 보여주는 개수
-    let allItems = [];
-
-    function searchMarket() {
-        currentPage = 1; // 검색을 시작할 때 페이지 초기화
-        allItems = [];
-
-        let data = {
-            sort: "GRADE",
-            categoryCode: 100000,
-            itemName: "",
-            pageNo: currentPage,
-            pageSize: pageSize,
-            sortCondition: "ASC"
-        }
-
-        postApi('/api/market/search', data, function onSuccess(response) {
-            if (response && response.Items.length > 0) {
-                allItems = allItems.concat(response.Items); // 아이템 병합
-                if (response.Items.length === pageSize) {
-                    // 더 가져올 페이지가 있다면
-                    currentPage++; // 페이지 증가
-                    data.pageNo = currentPage; // 다음 페이지 번호 설정
-
-                    // 재귀 호출
-                    postApi('/api/market/search', data, onSuccess, onApiError);
-                } else {
-                    // 모든 데이터를 다 가져왔으면 결과 렌더링
-                    onSearchMarketSuccess(allItems);
-                }
-            } else {
-                // 결과가 없으면 종료
-                onSearchMarketSuccess(allItems);
-            }
-        }, onApiError);
-    }
-
-    function onSearchMarketSuccess(data) {
-        const results = document.getElementById('results');
-        results.innerHTML = ''; // 기존 결과 초기화
-        const itemId = [[${region.getStartItemId()}]];
-        const items = data || [];
-
-        items.forEach(item => {
-            if(parseInt(item.Id) >= itemId && parseInt(item.Id) <= itemId + 6) {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                <td>${item.Id}</td>
-                <td>${item.Name}</td>
-                <td>${item.Grade}</td>
-                <td><img src="${item.Icon}" alt="${item.Name} 아이콘"></td>
-                <td>${item.RecentPrice}</td>
-                <td>약 ${calcPrice(item)} </td>`;
-                results.appendChild(row);
-            }
-        });
-    }
-    function calcPrice(item) {
-        const itemPrice = parseInt(item.RecentPrice);
-        switch (item.Grade) {
-            case "일반": return itemPrice * 50;
-            case "고급": return itemPrice * 20;
-            case "희귀": return itemPrice * 20;
-            case "영웅": return itemPrice * 6;
-            case "전설": return itemPrice * 3;
-        }
-    }
-</script>
 </body>
 </html>

@@ -111,3 +111,34 @@ ul {
     font-weight: normal;
     color: aliceblue;
 }
+.sub-container {
+    flex: 1;
+}
+#sub-title {
+    text-align: center;
+    color: #dddbdb;
+    font-size: 2vw;
+}
+#resultsTable {
+    margin: 1vw;
+    table-layout: fixed;
+    border-collapse: collapse;
+    height: fit-content;
+    background-color: #454545;
+
+}
+
+#resultsTable th {
+    width: 4vw;
+}
+
+#resultsTable td, tr {
+    text-align: center;
+    font-size: 1vw;
+    border: 2px solid black;
+    color: #dddbdb;
+    overflow: hidden;
+}
+.고급{
+    color: darkgreen;
+}

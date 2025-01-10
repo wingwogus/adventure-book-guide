@@ -9,5 +9,6 @@ public class MarketSearchReq {
     private int categoryCode;
     private String itemName;
     private int pageNo;
+    private int pageSize;
     private String sortCondition;
 }
