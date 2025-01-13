@@ -125,19 +125,26 @@ ul {
     color: #dddbdb;
     font-size: 2vw;
 }
-#resultsTable {
+#total-price {
+    text-align: center;
+    color: #dddbdb;
+    font-size: 1.5vw;
+}
+#result-table {
     margin: 1vw;
     table-layout: fixed;
     border-collapse: collapse;
-    background-color: #786767;
+    background-color: #404040;
 }
 
-#resultsTable td, tr {
+#result-table td, tr {
     text-align: center;
     font-size: 1vw;
     color: #dddbdb;
     overflow: hidden;
     padding: 0.5vw;
+    border: 0.5px solid #000000;
+    border-bottom: 2px solid #100000;
 }
 .grade{
     font-weight: bold;
