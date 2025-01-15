@@ -10,10 +10,4 @@ public class HomeController {
     public String home() {
         return "redirect:/regions";
     }
-
-    @GetMapping("/search")
-    public String search() {
-        return "search-item-id";
-    }
-
 }

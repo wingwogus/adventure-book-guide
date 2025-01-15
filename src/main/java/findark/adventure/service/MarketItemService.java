@@ -20,6 +20,7 @@ public class MarketItemService {
 
     private final ApiService apiService;
     private final MarketItemRepository marketItemRepository;
+    private final RegionService regionService;
 
     @Transactional
     public void fetchAndSaveMarketData() {
@@ -51,6 +52,29 @@ public class MarketItemService {
                     marketItem.setRecentPrice(item.getRecentPrice());
                     marketItem.setCurrentMinPrice(item.getCurrentMinPrice());
 
+                    switch (item.getId() / 100) {
+                        case 9101: marketItem.setRegion(regionService.findRegion(1L));break;
+                        case 9117: marketItem.setRegion(regionService.findRegion(2L));break;
+                        case 9114: marketItem.setRegion(regionService.findRegion(3L));break;
+                        case 9115: marketItem.setRegion(regionService.findRegion(4L));break;
+                        case 9102: marketItem.setRegion(regionService.findRegion(5L));break;
+                        case 9103: marketItem.setRegion(regionService.findRegion(6L));break;
+                        case 9104: marketItem.setRegion(regionService.findRegion(7L));break;
+                        case 9111: marketItem.setRegion(regionService.findRegion(8L));break;
+                        case 9106: marketItem.setRegion(regionService.findRegion(9L));break;
+                        case 9091: marketItem.setRegion(regionService.findRegion(10L));break;
+                        case 9071: marketItem.setRegion(regionService.findRegion(11L));break;
+                        case 9110: marketItem.setRegion(regionService.findRegion(12L));break;
+                        case 9108: marketItem.setRegion(regionService.findRegion(13L));break;
+                        case 9119: marketItem.setRegion(regionService.findRegion(14L));break;
+                        case 9124: marketItem.setRegion(regionService.findRegion(15L));break;
+                        case 9112: marketItem.setRegion(regionService.findRegion(16L));break;
+                        case 9125: marketItem.setRegion(regionService.findRegion(18L));break;
+                        case 9113: marketItem.setRegion(regionService.findRegion(19L));break;
+                        case 9126: marketItem.setRegion(regionService.findRegion(20L));break;
+                        case 9121: marketItem.setRegion(regionService.findRegion(21L));break;
+                    }
+
                     marketItemRepository.save(marketItem);
                 }
                 hasMoreData = body.getItems().size() == pageSize; // 페이지가 꽉 찼으면 더 있음
@@ -62,14 +86,6 @@ public class MarketItemService {
     }
 
     public List<MarketItem> getItemsByRegion(Region region) {
-        int itemId = region.getStartItemId();
-        List<MarketItem> marketItems = new ArrayList<>();
-        for (MarketItem item : marketItemRepository.findAll()) {
-            if (item.getId() >= itemId && item.getId() <= itemId + 6) {
-                marketItems.add(item);
-            }
-        }
-
-        return marketItems;
+        return marketItemRepository.findMarketItemsByRegion(region);
     }
 }

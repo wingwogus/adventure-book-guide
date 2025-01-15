@@ -52,11 +52,11 @@
         <tr>
             <td th:each="item : ${items}">
                 <th:block th:switch="${item.getGrade()}">
-                    <span th:case="일반" th:text="${item.getName()}" style="color: white" class="grade">일반</span>
-                    <span th:case="고급" th:text="${item.getName()}" style="color: darkgreen" class="grade">고급</span>
-                    <span th:case="희귀" th:text="${item.getName()}" style="color: dodgerblue" class="grade">희귀</span>
-                    <span th:case="영웅" th:text="${item.getName()}" style="color: #a355ff" class="grade"> 영웅</span>
-                    <span th:case="전설" th:text="${item.getName()}" style="color: darkorange" class="grade">전설</span>
+                    <span th:case="일반" th:text="${item.getName()}" style="color: white" class="item-name">일반</span>
+                    <span th:case="고급" th:text="${item.getName()}" style="color: darkgreen" class="item-name">고급</span>
+                    <span th:case="희귀" th:text="${item.getName()}" style="color: dodgerblue" class="item-name">희귀</span>
+                    <span th:case="영웅" th:text="${item.getName()}" style="color: #a355ff" class="item-name"> 영웅</span>
+                    <span th:case="전설" th:text="${item.getName()}" style="color: darkorange" class="item-name">전설</span>
                 </th:block>
             </td>
         </tr>
@@ -93,7 +93,14 @@
         });
 
 
-        document.getElementById("total-price").textContent = `총 가격: ${totalPrice}`;
+        document.getElementById("total-price").textContent = `총 가격: ${totalPrice} `;
+
+        let img = document.createElement("img");
+        img.src = "/img/gold.png";
+        img.width = "20";
+        img.alt = "gold";
+
+        document.getElementById("total-price").appendChild(img);
     });
 </script>
 </html>

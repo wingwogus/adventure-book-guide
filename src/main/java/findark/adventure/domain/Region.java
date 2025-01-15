@@ -17,8 +17,9 @@ public class Region {
 
     private String name;
 
-    private int startItemId;
-
     @OneToMany(mappedBy = "region", cascade = CascadeType.ALL)
     private List<Map> maps = new ArrayList<>();
+
+    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL)
+    private List<MarketItem> items = new ArrayList<>();
 }

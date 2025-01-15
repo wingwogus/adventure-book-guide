@@ -1,8 +1,6 @@
 package findark.adventure.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,4 +19,8 @@ public class MarketItem {
     private double yDayAvgPrice;
     private int recentPrice;
     private int currentMinPrice;
+
+    @ManyToOne
+    @JoinColumn(name = "region_id")
+    private Region region;
 }
