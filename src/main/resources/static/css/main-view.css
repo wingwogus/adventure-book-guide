@@ -2,11 +2,24 @@ a:visited {
     text-decoration: none;
 }
 body {
-    display: flex;
-    height: 100vh;
     margin: 0;
     background-color: rgb(64, 64, 64);
     font-family: "Noto Sans KR", sans-serif;
+    /*font-family: "휴먼아미체", sans-serif;*/
+}
+header {
+    height: 10vh;
+    margin: 0;
+    background-color: #333333;
+}
+.site-logo {
+    display:inline-block;
+    padding: 3vh 2vw;
+}
+.adventure-book {
+    display: flex;
+    height: 90vh;
+    margin: 0;
 }
 ul {
     padding: 0;
@@ -17,6 +30,7 @@ ul {
     padding: 2vh 0;
     background-color: rgba(0, 0, 0, 0.3);
     overflow-y: auto;
+    margin-right: 1vh;
 }
 .sidebar::-webkit-scrollbar {
     display: none;
@@ -28,7 +42,7 @@ ul {
 }
 .main {
     flex: 1;
-    margin: 2vh;
+    margin: 1vh;
     border-radius: 10px;
     background-color: #535353;
 }
@@ -41,17 +55,15 @@ ul {
     color: aliceblue;
     text-shadow: 0 0.5vw 1vw rgb(0,0,0);
 }
-
 .region-item-container:hover {
     background-color: rgba(103, 31, 31, 0.2);
 }
-
 .second-sidebar {
     position: fixed;
-    top: 0;
+    top: 10vh;
     left: 15%;
     width: 10vw;
-    height: 100%;
+    height: 90vh;
     background-color: rgba(0, 0, 0, 0.2);
     color: white;
     opacity: 0;
@@ -61,7 +73,6 @@ ul {
     transition: opacity 0.3s ease, transform 0.5s ease-in-out, box-shadow 0.3s ease;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0);
 }
-
 .region-item-container:hover .second-sidebar {
     opacity: 1;
     transform: translateX(0);
@@ -92,6 +103,7 @@ ul {
     padding: 10px 0;
     display: flex;
     gap: 10px;
+    margin-bottom: 4vh;
 }
 .btn {
     padding: 10px 20px;
@@ -115,7 +127,7 @@ ul {
 }
 .sub-container {
     flex: 1;
-    margin: 2vh;
+    margin: 1vh;
     border-radius: 10px;
     background-color: #535353;
     height: fit-content;

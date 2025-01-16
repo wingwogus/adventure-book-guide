@@ -52,5 +52,4 @@ public class MarketSearchRes {
         @JsonProperty("CurrentMinPrice")
         private int currentMinPrice;
     }
-
 }
