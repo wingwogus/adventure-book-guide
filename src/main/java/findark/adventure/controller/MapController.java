@@ -71,6 +71,6 @@ public class MapController {
         model.addAttribute("map", map);
         model.addAttribute("items", items);
 
-        return "main-view";
+        return "main";
     }
 }
