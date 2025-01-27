@@ -41,6 +41,7 @@ public class MarketItemService {
             if (body != null && body.getItems() != null) {
                 for (MarketSearchRes.MarketResultVO item : body.getItems()) {
                     MarketItem marketItem = new MarketItem();
+
                     marketItem.setId(item.getId());
                     marketItem.setName(item.getName());
                     marketItem.setGrade(item.getGrade());

@@ -10,22 +10,6 @@ body {
     font-family: "Noto Sans KR", sans-serif;
     /*font-family: "휴먼아미체", sans-serif;*/
 }
-header {
-    display: grid;
-    grid-template-columns: 17rem auto;
-    height: 7rem;
-    background-color: #333333;
-    padding: 0 10vw;
-}
-.site-logo {
-    display: grid;
-    align-items: center;
-    text-align: center;
-}
-.search {
-    display: grid;
-    align-items: center;
-}
 .text-center {
     text-align: center;
 }

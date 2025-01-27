@@ -36,10 +36,19 @@ public class CharacterInfo {
         @JsonProperty("ExpeditionLevel")
         private Integer expeditionLevel;
 
+        @JsonProperty("TownLevel")
+        private Integer townLevel;
+
         @JsonProperty("TownName")
         private String townName;
 
         @JsonProperty("TotalSkillPoint")
         private Integer totalSkillPoint;
+
+        @JsonProperty("Title")
+        private String title;
+
+        @JsonProperty("GuildName")
+        private String guildName;
     }
 }

@@ -52,6 +52,7 @@ public class ApiService {
                 String.class);
 
         List<CharacterInfo> characterInfo = _getArrayData(jsonResult, CharacterInfo.class);
+
         if(characterInfo == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -63,7 +64,6 @@ public class ApiService {
                     HttpMethod.GET,
                     _getEntity(null),
                     CharacterInfo.ArmoryProfile.class).getBody();
-
             info.setArmoryProfile(armoryProfile);
         }
 

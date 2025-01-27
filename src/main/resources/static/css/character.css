@@ -1,0 +1,10 @@
+main {
+    padding: 0 10vw;
+    color: white;
+}
+.bg-loa {
+    background-color: rgb(21,24,29);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 8rem 20%;
+}

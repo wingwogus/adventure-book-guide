@@ -16,9 +16,3 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("total-price").appendChild(img);
 });
 
-const searchInput = document.getElementById("character-search");
-searchInput.addEventListener('keydown', (e) => {
-    if(e.key === "Enter") {
-        this.location.href = "/character/" + searchInput.value;
-    }
-})
