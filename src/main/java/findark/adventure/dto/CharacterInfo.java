@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class CharacterInfo {
@@ -26,6 +28,28 @@ public class CharacterInfo {
     private String itemMaxLevel;
 
     private ArmoryProfile armoryProfile;
+
+    private CharacterArkPassive arkPassive;
+
+    @Getter
+    @Setter
+    public static class CharacterArkPassive {
+        @JsonProperty("Points")
+        private List<Point> points;
+
+        @Getter
+        @Setter
+        public static class Point {
+            @JsonProperty("Name")
+            private String name;
+
+            @JsonProperty("Value")
+            private int value;
+
+            @JsonProperty("ToolTip")
+            private String toolTip;
+        }
+    }
 
     @Getter
     @Setter

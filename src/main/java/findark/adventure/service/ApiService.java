@@ -59,18 +59,28 @@ public class ApiService {
 
         for(CharacterInfo info : characterInfo){
             String name = info.getCharacterName();
-            CharacterInfo.ArmoryProfile armoryProfile = restTemplate.exchange(
-                    apiUrl + "/armories/characters/" + name + "/profiles",
-                    HttpMethod.GET,
-                    _getEntity(null),
-                    CharacterInfo.ArmoryProfile.class).getBody();
+
+            CharacterInfo.ArmoryProfile armoryProfile = getResponseBody(
+                    CharacterInfo.ArmoryProfile.class,
+                    apiUrl + "/armories/characters/" + name + "/profiles");
             info.setArmoryProfile(armoryProfile);
+
+            CharacterInfo.CharacterArkPassive arkPassive = getResponseBody(
+                    CharacterInfo.CharacterArkPassive.class,
+                    apiUrl + "/armories/characters/" + name + "/arkpassive");
+            info.setArkPassive(arkPassive);
         }
 
         CharacterRes res = new CharacterRes();
         res.setCharacterInfo(characterInfo);
 
         return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    private <T> T getResponseBody (Class<T> clazz, String url) {
+        return restTemplate.exchange(
+                url, HttpMethod.GET, _getEntity(null), clazz)
+                .getBody();
     }
 
     private HttpEntity _getEntity(Object obj) {

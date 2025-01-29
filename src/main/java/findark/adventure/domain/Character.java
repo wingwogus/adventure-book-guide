@@ -1,11 +1,6 @@
 package findark.adventure.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import findark.adventure.dto.CharacterInfo;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,13 +28,15 @@ public class Character {
 
     private Integer expeditionLevel;
 
-    private String townName;
-
-    private Integer townLevel;
-
     private Integer totalSkillPoint;
 
     private String title;
 
     private String guildName;
+
+    @Embedded
+    private Town town;
+
+    @Embedded
+    private ArkPassivePoint arkPassivePoint;
 }

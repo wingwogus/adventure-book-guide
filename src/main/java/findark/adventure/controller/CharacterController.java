@@ -29,6 +29,8 @@ public class CharacterController {
         }
 
         model.addAttribute("characterInfo", character);
+        model.addAttribute("town", character.getTown());
+        model.addAttribute("arkPassivePoint", character.getArkPassivePoint());
 
         return "character";
     }

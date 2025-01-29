@@ -25,26 +25,32 @@
 <!--    </div>-->
 </header>
 <main>
-    <div class="row" style="height: 35rem" th:if="${characterInfo}">
+    <div class="row" style="height: 40rem" th:if="${characterInfo}">
         <div class="col-xl-4 bg-loa ps-5" th:style="'background-image:url('+ ${characterInfo.getCharacterImage()} +');'">
             <div class="row">
                 <h3 class="d-inline col-12 gy-5" th:text="${characterInfo.getServerName()}">서버 이름</h3>
                 <span class="d-inline fs-4 col-auto" th:text="${characterInfo.getCharacterClassName()}">클래스</span>
-                <h1 class="col-12 gy-4" th:text="${characterInfo.getCharacterName()}">이름</h1>
+                <span class="col-12 gy-4 fs-5" th:text="${characterInfo.getGuildName()}">길드</span>
+                <h1 class="col-12" th:text="${characterInfo.getCharacterName()}">이름</h1>
                 <span class="col-12 fs-5" th:text="${characterInfo.getTitle()}">Title</span>
-                <h1 class="col-12 gy-4" th:text="${characterInfo.getItemAvgLevel()}">Item Level</h1>
-                <div class="col-auto gy-2">
+                <h1 class="col-12 gy-4" th:text="${characterInfo.getItemMaxLevel()}">Item Level</h1>
+                <div class="col-auto gy-4">
                     <p class="m-0 fs-4">전투</p>
                     Lv.<h3 class="d-inline ms-1" th:text="${characterInfo.getCharacterLevel()}">Character Level</h3>
                 </div>
-                <div class="col-auto gy-2">
+                <div class="col-auto gy-4">
                     <p class="m-0 fs-4">원정대</p>
                     Lv.<h3 class="d-inline ms-1" th:text="${characterInfo.getExpeditionLevel()}">Expedition Level</h3>
                 </div>
                 <div class="col-12 gy-4">
                     <p class="m-0 fs-4">영지</p>
-                    Lv.<h3 class="d-inline ms-1" th:text="${characterInfo.getTownLevel()}"></h3>
-                    <h3 class="d-inline" th:text="${characterInfo.getTownName()}"></h3>
+                    Lv.<h3 class="d-inline ms-1" th:text="${town.getTownLevel()}"></h3>
+                    <h3 class="d-inline" th:text="${town.getTownName()}"></h3>
+                </div>
+                <div class="col-8 gy-2 row text-center">
+                    <span class="col-2 fs-4 bg-warning p-0 mx-2 rounded-4" th:text="${arkPassivePoint.getEvolution()}">진화</span>
+                    <span class="col-2 fs-4 bg-info p-0 mx-2 rounded-4" th:text="${arkPassivePoint.getRealization()}">깨달음</span>
+                    <span class="col-2 fs-4 bg-success p-0 mx-2 rounded-4" th:text="${arkPassivePoint.getLeaf()}">도약</span>
                 </div>
             </div>
         </div>

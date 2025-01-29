@@ -1,10 +1,11 @@
 package findark.adventure.service;
 
+import findark.adventure.domain.ArkPassivePoint;
 import findark.adventure.domain.Character;
+import findark.adventure.domain.Town;
 import findark.adventure.dto.CharacterInfo;
 import findark.adventure.dto.CharacterReq;
 import findark.adventure.dto.CharacterRes;
-import findark.adventure.dto.MarketSearchRes;
 import findark.adventure.repository.CharacterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,15 +39,27 @@ public class CharacterService {
                 character.setCharacterClassName(characterInfo.getCharacterClassName());
                 character.setItemAvgLevel(characterInfo.getItemAvgLevel());
                 character.setItemMaxLevel(characterInfo.getItemMaxLevel());
+
                 CharacterInfo.ArmoryProfile armoryProfile = characterInfo.getArmoryProfile();
                 if(armoryProfile != null) {
                     character.setCharacterImage(armoryProfile.getCharacterImage());
-                    character.setTownName(armoryProfile.getTownName());
-                    character.setTownLevel(armoryProfile.getTownLevel());
                     character.setExpeditionLevel(armoryProfile.getExpeditionLevel());
                     character.setTotalSkillPoint(armoryProfile.getTotalSkillPoint());
                     character.setTitle(armoryProfile.getTitle());
                     character.setGuildName(armoryProfile.getGuildName());
+
+                    Town town = new Town(armoryProfile.getTownName(), armoryProfile.getTownLevel());
+                    character.setTown(town);
+                }
+
+                CharacterInfo.CharacterArkPassive arkPassive = characterInfo.getArkPassive();
+                if(arkPassive != null) {
+                    List<CharacterInfo.CharacterArkPassive.Point> points = arkPassive.getPoints();
+                    ArkPassivePoint arkPassivePoint = new ArkPassivePoint(
+                            points.get(0).getValue(),
+                            points.get(1).getValue(),
+                            points.get(2).getValue());
+                    character.setArkPassivePoint(arkPassivePoint);
                 }
 
                 characterRepository.save(character);
