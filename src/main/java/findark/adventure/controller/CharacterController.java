@@ -1,6 +1,7 @@
 package findark.adventure.controller;
 
 import findark.adventure.domain.Character;
+import findark.adventure.dto.CharacterDto;
 import findark.adventure.service.CharacterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -9,7 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,14 +25,27 @@ public class CharacterController {
 
         Character character = characterService.getCharacterByName(characterName);
 
-        if (character == null) {
+        if (character == null || ChronoUnit.HOURS.between(LocalDateTime.now(), character.getLastModifiedAt()) > 1) {
             characterService.searchCharacterAndSave(characterName);
             character = characterService.getCharacterByName(characterName);
         }
 
-        model.addAttribute("characterInfo", character);
-        model.addAttribute("town", character.getTown());
-        model.addAttribute("arkPassivePoint", character.getArkPassivePoint());
+        CharacterDto characterDto = new CharacterDto(
+                character.getServerName(),
+                character.getCharacterName(),
+                character.getCharacterLevel(),
+                character.getCharacterClassName(),
+                character.getItemMaxLevel(),
+                character.getCharacterImage(),
+                character.getExpeditionLevel(),
+                character.getTitle(),
+                character.getGuildName(),
+                character.getTown(),
+                character.getArkPassivePoint());
+
+        model.addAttribute(
+                "character",
+                characterDto.getCharacterImage() != null ? characterDto : null);
 
         return "character";
     }

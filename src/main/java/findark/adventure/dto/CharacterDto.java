@@ -1,16 +1,15 @@
-package findark.adventure.domain;
+package findark.adventure.dto;
 
-import jakarta.persistence.*;
+import findark.adventure.domain.ArkPassivePoint;
+import findark.adventure.domain.Town;
+import jakarta.persistence.Embedded;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 
-@Entity
-@Getter @Setter
-@Table(name = "characters")
-public class Character extends BaseEntity {
-
-    @Id @GeneratedValue
-    private Long id;
+@Data
+@AllArgsConstructor
+public class CharacterDto {
 
     private String serverName;
 
@@ -20,15 +19,11 @@ public class Character extends BaseEntity {
 
     private String characterClassName;
 
-    private String itemAvgLevel;
-
     private String itemMaxLevel;
 
     private String characterImage;
 
     private Integer expeditionLevel;
-
-    private Integer totalSkillPoint;
 
     private String title;
 

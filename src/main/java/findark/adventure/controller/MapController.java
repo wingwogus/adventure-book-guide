@@ -29,7 +29,7 @@ public class MapController {
     /**
      * 1. "/" 처리 - 지역 선택 화면
      */
-    @GetMapping("")
+    @GetMapping("/")
     public String home(Model model) {
         // 모든 지역 가져오기
         List<Region> regions = regionService.getRegions();

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,9 +26,8 @@ public class CharacterService {
     public void searchCharacterAndSave(String name) {
         CharacterReq characterReq = new CharacterReq();
         characterReq.setCharacterName(name);
-        ResponseEntity<CharacterRes> response = apiService.characterSearch(characterReq);
 
-        CharacterRes body = response.getBody();
+        CharacterRes body = apiService.characterSearch(characterReq).getBody();
 
         if (body != null && body.getCharacterInfo() != null) {
             for (CharacterInfo characterInfo : body.getCharacterInfo()) {
@@ -39,6 +39,7 @@ public class CharacterService {
                 character.setCharacterClassName(characterInfo.getCharacterClassName());
                 character.setItemAvgLevel(characterInfo.getItemAvgLevel());
                 character.setItemMaxLevel(characterInfo.getItemMaxLevel());
+                character.setLastModifiedAt(LocalDateTime.now());
 
                 CharacterInfo.ArmoryProfile armoryProfile = characterInfo.getArmoryProfile();
                 if(armoryProfile != null) {
